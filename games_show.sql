@@ -84,10 +84,6 @@ CREATE TABLE "pergunta"(
     "id_jogo" INT NOT NULL
 );
 
-CREATE TABLE "users"(
-    "userId" SERIAL PRIMARY KEY,
-    "email" VARCHAR(255) NOT NULL
-);
 -- ALTER table "pergunta" ADD PRIMARY KEY "pergunta_id_pergunta_primary"("id_pergunta");
 -- ALTER TABLE "pergunta" ADD UNIQUE "pergunta_id_jogo_unique"("id_jogo");
 ALTER TABLE "fase" ADD CONSTRAINT "fase_id_site_foreign" FOREIGN KEY("id_site") REFERENCES "site"("id_site");

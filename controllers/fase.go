@@ -11,6 +11,37 @@ import (
 
 // GET /fase
 // Pega um fase
+func PegaFaseJogo(c *gin.Context) {
+	var paramId = c.Param("id")
+
+	jogoID, _ := strconv.Atoi(paramId)
+
+	var jogo = models.Jogo{
+		IDJogo: jogoID,
+	}
+
+	resultes := models.DB.Table("jogo").First(&jogo)
+	if resultes.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": resultes.Error.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": jogo})
+
+	faseID, _ := strconv.Atoi(paramId)
+
+	var fase = models.Fase{
+		IDFase: faseID,
+	}
+
+	results := models.DB.Table("fase").First(&fase)
+	if results.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": results.Error.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": fase})
+
+}
+
 func PegaFase(c *gin.Context) {
 	var paramId = c.Param("id")
 

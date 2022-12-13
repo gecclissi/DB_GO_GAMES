@@ -16,7 +16,7 @@ func main() {
 
 		v1 := api.Group("/v1")
 		{
-			jogador := v1.Group("/jogador", middlewares.Auth())
+			jogador := v1.Group("/users")
 			{
 				jogador.GET("/:id", controllers.PegaJogador)
 				jogador.POST("", controllers.CriaJogador)
@@ -24,12 +24,20 @@ func main() {
 				jogador.DELETE("/:id", controllers.RemoverJogador)
 			}
 
-			jogo := v1.Group("/jogo", middlewares.Auth())
+			jogo := v1.Group("/games", middlewares.Auth())
 			{
 				jogo.GET("/:id", controllers.PegaJogo)
 				jogo.POST("", controllers.CriaJogo)
 				jogo.PUT("/:id", controllers.AtualizaJogo)
 				jogo.DELETE("/:id", controllers.RemoverJogo)
+
+				pergunta := jogo.Group("/quiz")
+				{
+					pergunta.GET("/:id", controllers.PegaPergunta)
+					pergunta.POST("", controllers.CriaPergunta)
+					pergunta.PUT("/:id", controllers.AtualizaPergunta)
+					pergunta.DELETE("/:id", controllers.RemoverPergunta)
+				}
 			}
 
 			site := v1.Group("/site")
@@ -40,20 +48,13 @@ func main() {
 				site.DELETE("/:id", controllers.RemoverSite)
 			}
 
-			fase := v1.Group("/fase")
+			fase := v1.Group("/stages")
 			{
+				fase.GET("", controllers.PegaFaseJogo)
 				fase.GET("/:id", controllers.PegaFase)
 				fase.POST("", controllers.CriaFase)
 				fase.PUT("/:id", controllers.AtualizaFase)
 				fase.DELETE("/:id", controllers.RemoverFase)
-			}
-
-			pergunta := v1.Group("/pergunta")
-			{
-				pergunta.GET("/:id", controllers.PegaPergunta)
-				pergunta.POST("", controllers.CriaPergunta)
-				pergunta.PUT("/:id", controllers.AtualizaPergunta)
-				pergunta.DELETE("/:id", controllers.RemoverPergunta)
 			}
 
 			resposta := v1.Group("/resposta")
@@ -102,14 +103,6 @@ func main() {
 				tem.POST("", controllers.CriaTem)
 				tem.PUT("/:id", controllers.AtualizaTem)
 				tem.DELETE("/:id", controllers.RemoverTem)
-			}
-
-			user := v1.Group("/users", middlewares.Auth())
-			{
-				user.GET("/:id", controllers.PegaUser)
-				user.POST("", controllers.CriaUser)
-				user.PUT("/:id", controllers.AtualizaUser)
-				user.DELETE("/:id", controllers.RemoverUser)
 			}
 
 			login := v1.Group("/login")

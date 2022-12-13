@@ -18,8 +18,8 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	var user models.Users
-	dbError := db.Where("email = ?", p.Email).First(&user).Error
+	var user models.Jogador
+	dbError := db.Table("jogador").Where("email = ?", p.Email).First(&user).Error
 	if dbError != nil {
 		c.JSON(400, gin.H{
 			"error": "cannot find user: ",
@@ -27,7 +27,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	token, err := services.NewJWTService().GenerateToken(user.Userid)
+	token, err := services.NewJWTService().GenerateToken(user.IDJogador)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"error": err.Error(),
