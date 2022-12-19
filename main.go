@@ -50,8 +50,8 @@ func main() {
 
 			fase := v1.Group("/stages")
 			{
-				fase.GET("", controllers.PegaFaseJogo)
-				fase.GET("/:id", controllers.PegaFase)
+				fase.GET("/:id", controllers.PegaFaseJogo)
+				fase.GET("/fase/:id", controllers.PegaFase)
 				fase.POST("", controllers.CriaFase)
 				fase.PUT("/:id", controllers.AtualizaFase)
 				fase.DELETE("/:id", controllers.RemoverFase)

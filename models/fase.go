@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Fase struct {
 	IDFase      int       `json:"id_fase" gorm:"primaryKey"`
