@@ -23,8 +23,9 @@ type Jogador struct {
 // );
 
 type JogadorInput struct {
-	Nome            string `json:"nome" binding:"required"`
-	Email           string `json:"email" binding:"required"`
-	Senha           string `json:"senha" binding:"required"`
-	DataAniversario string `json:"data_aniversario" `
+	Email string `json:"email" binding:"required"`
 }
+
+//Nome            string `json:"nome" binding:"required"`
+//Senha           string `json:"senha" binding:"required"`
+//DataAniversario string `json:"data_aniversario" `

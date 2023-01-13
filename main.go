@@ -18,10 +18,11 @@ func main() {
 		{
 			jogador := v1.Group("/users")
 			{
-				jogador.GET("/:id", controllers.PegaJogador)
+				jogador.GET("/:id", middlewares.Auth(), controllers.PegaJogador)
+				jogador.GET("/get", controllers.PegaJogadorEmail)
 				jogador.POST("", controllers.CriaJogador)
-				jogador.PUT("/:id", controllers.AtualizaJogador)
-				jogador.DELETE("/:id", controllers.RemoverJogador)
+				jogador.PUT("/:id", middlewares.Auth(), controllers.AtualizaJogador)
+				//jogador.DELETE("/:id", controllers.RemoverJogador)
 			}
 
 			jogo := v1.Group("/games", middlewares.Auth())

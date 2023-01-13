@@ -11,6 +11,7 @@ import (
 
 // GET /jogador
 // Pega um jogador
+
 func PegaJogador(c *gin.Context) {
 	var paramId = c.Param("id")
 
@@ -28,6 +29,41 @@ func PegaJogador(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": jogador})
 }
 
+func PegaJogadorEmail(c *gin.Context) {
+	var input models.JogadorInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		// c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(400, gin.H{
+			"error":    "cannot bind JSON: " + err.Error(),
+			"time":     time.Now(),
+			"mensagen": "Fail",
+		})
+		return
+	}
+	jogador := models.Jogador{
+		Email: input.Email,
+	}
+
+	results := models.DB.Table("jogador").Where(map[string]string{"email": input.Email}).First(&jogador)
+	if results.Error != nil {
+		//c.JSON(http.StatusBadRequest, gin.H{"error": results.Error.Error()})
+		c.JSON(500, gin.H{
+			"error":    results.Error.Error(),
+			"mensagen": "Fail",
+			"time":     time.Now(),
+		})
+		return
+	}
+
+	//c.JSON(http.StatusOK, gin.H{"data": jogador})
+	c.JSON(200, gin.H{
+		"mensagen":     "success",
+		"DataCadastro": jogador.DataCadastro,
+		"id":           jogador.IDJogador,
+		"email":        jogador.Email,
+	})
+}
+
 // POST /jogador
 // Cria um novo Jogador
 func CriaJogador(c *gin.Context) {
@@ -35,30 +71,50 @@ func CriaJogador(c *gin.Context) {
 	var input models.JogadorInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(400, gin.H{
+			"error":    "cannot bind JSON: " + err.Error(),
+			"time":     time.Now(),
+			"mensagen": "Fail",
+		})
 		return
 	}
 
-	dataAniver, err := time.Parse("2006-01-02", input.DataAniversario)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	//dataAniver, err := time.Parse("2006-01-02", input.DataAniversario)
+	//if err != nil {
+	//	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	//	c.JSON(401, gin.H{
+	//		"error":    "cannot find user: ",
+	//		"time":     time.Now(),
+	//		"mensagen": "Fail",
+	//	})
+	//	return
+	//}
 	// Create book
+	//Nome:            input.Nome,
+	//Senha:           input.Senha,
+	//DataAniversario: dataAniver,
 	jogador := models.Jogador{
-		Nome:            input.Nome,
-		Email:           input.Email,
-		Senha:           input.Senha,
-		DataAniversario: dataAniver,
-		DataCadastro:    time.Now(),
-		DataUltima:      time.Now(),
+		Email:        input.Email,
+		DataCadastro: time.Now(),
+		DataUltima:   time.Now(),
 	}
 	results := models.DB.Table("jogador").Create(&jogador)
 	if results.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": results.Error.Error()})
+		c.JSON(500, gin.H{
+			"mensagen": "Fail",
+			"time":     time.Now(),
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": jogador})
+	//c.JSON(http.StatusOK, gin.H{"data": jogador})
+
+	c.JSON(201, gin.H{
+		"mensagen":     "success",
+		"DataCadastro": jogador.DataCadastro,
+		"id":           jogador.IDJogador,
+	})
 }
 
 // PUT /jogador
@@ -68,6 +124,11 @@ func AtualizaJogador(c *gin.Context) {
 	var input models.Jogador
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(400, gin.H{
+			"error":    "cannot bind JSON: " + err.Error(),
+			"time":     time.Now(),
+			"mensagen": "Fail",
+		})
 		return
 	}
 
@@ -77,6 +138,11 @@ func AtualizaJogador(c *gin.Context) {
 	findResult := models.DB.Table("jogador").First(&jogador)
 	if findResult.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": findResult.Error.Error()})
+		c.JSON(401, gin.H{
+			"error":    "cannot find user: ",
+			"time":     time.Now(),
+			"mensagen": "Fail",
+		})
 		return
 	}
 
@@ -97,10 +163,20 @@ func AtualizaJogador(c *gin.Context) {
 	results := models.DB.Table("jogador").Save(&jogador)
 	if results.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": results.Error.Error()})
+		c.JSON(500, gin.H{
+			"error":    results.Error.Error(),
+			"mensagen": "Fail",
+			"time":     time.Now(),
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": jogador})
+	//c.JSON(http.StatusOK, gin.H{"data": jogador})
+	c.JSON(201, gin.H{
+		"mensagen":     "success",
+		"DataCadastro": jogador.DataCadastro,
+		"id":           jogador.IDJogador,
+	})
 }
 
 // DELETE /jogador
@@ -119,4 +195,5 @@ func RemoverJogador(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": true})
+
 }
