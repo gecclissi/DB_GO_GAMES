@@ -1,6 +1,9 @@
 package main
 
 import (
+	"time"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/ouvermax/db_go_games/controllers"
 	"github.com/ouvermax/db_go_games/middlewares"
@@ -9,6 +12,13 @@ import (
 
 func main() {
 	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	models.ConnectDatabase()
 	api := r.Group("/api")
@@ -19,7 +29,7 @@ func main() {
 			jogador := v1.Group("/users")
 			{
 				jogador.GET("/:id", middlewares.Auth(), controllers.PegaJogador)
-				jogador.GET("/get", controllers.PegaJogadorEmail)
+				jogador.GET("/get/:email", controllers.PegaJogadorEmail)
 				jogador.POST("", controllers.CriaJogador)
 				jogador.PUT("/:id", middlewares.Auth(), controllers.AtualizaJogador)
 				//jogador.DELETE("/:id", controllers.RemoverJogador)
@@ -112,6 +122,6 @@ func main() {
 			}
 		}
 	}
-
+	// r.Use(cors.Default())
 	r.Run() // listen and serve on 0.0.0.0:8080
 }

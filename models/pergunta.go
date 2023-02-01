@@ -1,9 +1,10 @@
 package models
 
 type Pergunta struct {
-	IDPergunta int    `json:"id_pergunta" gorm:"primaryKey"`
-	Pergunta   string `json:"pergunta"`
-	IdJogo     int    `json:"id_jogo"`
+	IDPergunta int        `json:"id_pergunta" gorm:"primaryKey"`
+	Pergunta   string     `json:"pergunta"`
+	IdJogo     int        `json:"id_jogo"`
+	Respostas  []Resposta `json:"respostas" gorm:"-"`
 }
 
 //   CREATE TABLE "Pergunta"(

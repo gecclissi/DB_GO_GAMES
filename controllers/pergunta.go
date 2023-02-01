@@ -21,10 +21,21 @@ func PegaPergunta(c *gin.Context) {
 
 	results := models.DB.Table("pergunta").First(&pergunta)
 	if results.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": results.Error.Error()})
+		c.JSON(400, gin.H{"error": results.Error.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": pergunta})
+
+	var respostas []models.Resposta
+
+	resultsRepostas := models.DB.Table("resposta").Where(map[string]interface{}{"id_pergunta": pergunta.IDPergunta}).Find(&respostas)
+	if resultsRepostas.Error != nil {
+		c.JSON(400, gin.H{"error": resultsRepostas.Error.Error()})
+		return
+	}
+
+	pergunta.Respostas = respostas;
+
+	c.JSON(200, gin.H{"data": pergunta})
 }
 
 // POST /Pergunta
@@ -33,7 +44,7 @@ func CriaPergunta(c *gin.Context) {
 	// Validate input
 	var input models.PerguntaInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -44,11 +55,11 @@ func CriaPergunta(c *gin.Context) {
 	}
 	results := models.DB.Table("pergunta").Create(&pergunta)
 	if results.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": results.Error.Error()})
+		c.JSON(400, gin.H{"error": results.Error.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": pergunta})
+	c.JSON(200, gin.H{"data": pergunta})
 }
 
 // PUT /Pergunta

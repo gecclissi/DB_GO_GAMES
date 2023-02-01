@@ -3,8 +3,8 @@ package models
 type Resposta struct {
 	IDResposta int    `json:"id_resposta" gorm:"primaryKey"`
 	Resposta   string `json:"resposta"`
-	EhCorreta  bool   `json:"eh_correta"`
-	IdPergunta int    `json:"id_pergunta"`
+	EhCorreta  bool   `json:"-"`
+	IdPergunta int    `json:"-"`
 }
 
 //   CREATE TABLE "Resposta"(

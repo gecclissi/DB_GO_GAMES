@@ -1,9 +1,9 @@
 package models
 
 type RespostaRealizada struct {
-	IDRespostaRealizada int    `json:"id_resposta_realizada" gorm:"primaryKey"`
-	IdResposta   int `json:"id_resposta"`
-	IdJogador int    `json:"id_jogador"`
+	IDRespostaRealizada int `json:"id_resposta_realizada" gorm:"primaryKey"`
+	IdResposta          int `json:"id_resposta"`
+	IdJogador           int `json:"id_jogador"`
 }
 
 //   CREATE TABLE "Resposta"(
@@ -17,6 +17,6 @@ type RespostaRealizada struct {
 // );
 
 type RespostaRealizadaInput struct {
-	IdResposta   int `json:"id_resposta" binding:"required"`
-	IdJogador int    `json:"id_jogador" binding:"required"`
+	IdResposta int `json:"id_resposta" binding:"required"`
+	IdJogador  int `json:"id_jogador"`
 }

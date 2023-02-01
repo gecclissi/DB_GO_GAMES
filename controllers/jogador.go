@@ -23,10 +23,10 @@ func PegaJogador(c *gin.Context) {
 
 	results := models.DB.Table("jogador").First(&jogador)
 	if results.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": results.Error.Error()})
+		c.JSON(500, gin.H{"error": results.Error.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": jogador})
+	c.JSON(200, gin.H{"data": jogador})
 }
 
 func PegaJogadorEmail(c *gin.Context) {

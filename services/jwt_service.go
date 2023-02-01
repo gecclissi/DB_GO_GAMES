@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type jwtService struct {
@@ -18,8 +18,23 @@ func NewJWTService() *jwtService {
 }
 
 type Claim struct {
-	Sum int `json:"sum"`
+	IdJogador int `json:"id_jogador"`
 	jwt.StandardClaims
+}
+
+func (s *jwtService) GetClaimFromToken(toke string) (Claim, error) {
+	// Parse the token
+	token, err := jwt.ParseWithClaims(toke, &Claim{}, func(token *jwt.Token) (interface{}, error) {
+		// since we only use the one private key to sign the tokens,
+		// we also only use its public counter part to verify
+		return []byte(s.issure), nil
+	})
+	if err != nil {
+		return Claim{}, err
+	}
+	claims := token.Claims.(*Claim)
+
+	return *claims, nil
 }
 
 func (s *jwtService) GenerateToken(id int) (string, error) {

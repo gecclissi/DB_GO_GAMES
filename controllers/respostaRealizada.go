@@ -33,22 +33,45 @@ func CriaRespostaRealizada(c *gin.Context) {
 	// Validate input
 	var input models.RespostaRealizadaInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Create book
-	respostarealizada := models.RespostaRealizada{
-		IdResposta: input.IdResposta,
-		IdJogador:  input.IdJogador,
+	// token := c.GetHeader("Authorization")
+
+	// fmt.Printf("TOKEN: %s", token)
+
+	// token = strings.ReplaceAll(token, "Bearer ", "")
+
+	// claims, err := services.NewJWTService().GetClaimFromToken(token)
+	// if err != nil {
+	// 	c.JSON(500, gin.H{"error": err.Error()})
+	// 	return
+	// }
+
+	// respostarealizada := models.RespostaRealizada{
+	// 	IdResposta: input.IdResposta,
+	// 	IdJogador:  claims.IdJogador,
+	// }
+	// results := models.DB.Table("resposta_realizada").Create(&respostarealizada)
+	// if results.Error != nil {
+	// 	c.JSON(400, gin.H{"error": results.Error.Error()})
+	// 	return
+	// }
+	var resposta = models.Resposta{
+		IDResposta: input.IdResposta,
 	}
-	results := models.DB.Table("resposta_realizada").Create(&respostarealizada)
+
+	results := models.DB.Table("resposta").First(&resposta)
 	if results.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": results.Error.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": respostarealizada})
+	c.JSON(200, gin.H{"data": gin.H{
+		"eh_correto": resposta.EhCorreta,
+	}})
+
 }
 
 // PUT /Resposta
