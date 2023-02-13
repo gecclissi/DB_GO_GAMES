@@ -78,7 +78,7 @@ func main() {
 
 			respostarealizada := v1.Group("/respostarealizada")
 			{
-				respostarealizada.GET("/:id", controllers.PegaRespostaRealizada)
+				respostarealizada.GET("/", controllers.PegaRespostaRealizada)
 				respostarealizada.POST("", controllers.CriaRespostaRealizada)
 				respostarealizada.PUT("/:id", controllers.AtualizaRespostaRealizada)
 				respostarealizada.DELETE("/:id", controllers.RemoverRespostaRealizada)
