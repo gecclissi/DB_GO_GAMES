@@ -25,3 +25,27 @@ type JogoInput struct {
 	DataFinal string `json:"data_final" `
 	IdFase    int    `json:"id_fase" binding:"required"`
 }
+
+type RespostaRealizadaRes struct {
+	EhCorreta bool   `json:"eh_correta"`
+	Nome      string `json:"nome"`
+	Total     int    `json:"total"`
+}
+
+type RespostatinhaRealizadaRes struct {
+	Total int `json:"total"`
+}
+
+type InfosRespostas struct {
+	Corretas        int `json:"corretas"`
+	Erradas         int `json:"erradas"`
+	Pendentes       int `json:"pendentes"`
+	TotalRespondida int `json:"total_respondida"`
+	Total           int `json:"total"`
+}
+
+type Respostasjogo struct {
+	Nome           string         `json:"nome"`
+	TemProxima     bool           `json:"tem_proxima"`
+	InfosRespostas InfosRespostas `json:"infos_respostas"`
+}

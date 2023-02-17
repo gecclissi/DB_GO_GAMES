@@ -14,7 +14,7 @@ type Joga struct {
 //     "data_aniversario" DATE NOT NULL,
 //     "data_cadastro" DATE NOT NULL,
 //     "data_ultima" DATE NOT NULL
-// );
+// ); 
 
 type JogaInput struct {
 	IdJogo    int `json:"id_jogo" binding:"required"`
