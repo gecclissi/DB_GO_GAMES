@@ -44,6 +44,7 @@ func main() {
 
 				pergunta := jogo.Group("/quiz")
 				{
+					pergunta.GET("/get/:id", controllers.PegaProxima)
 					pergunta.GET("/:id", controllers.PegaPergunta)
 					pergunta.POST("", controllers.CriaPergunta)
 					pergunta.PUT("/:id", controllers.AtualizaPergunta)

@@ -32,6 +32,7 @@ type RespostaRealizadaRes struct {
 	Total     int    `json:"total"`
 }
 
+
 type RespostatinhaRealizadaRes struct {
 	Total int `json:"total"`
 }
